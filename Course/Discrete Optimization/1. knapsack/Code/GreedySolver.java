@@ -32,7 +32,6 @@ public class GreedySolver extends KnapsackSolver {
             choseItemNum += 1;
         }
         greedySolution.setChoseItems(greedyItems.subList(0,choseItemNum));
-
         return greedySolution;
     }
 

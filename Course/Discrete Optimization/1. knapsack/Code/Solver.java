@@ -2,19 +2,13 @@ import java.io.*;
 import java.util.List;
 import java.util.ArrayList;
 
-/**
- * The class <code>Solver</code> is an implementation of a greedy algorithm to solve the knapsack problem.
- *
- */
+
 public class Solver {
-    
-    /**
-     * The main class
-     */
+
     public static void main(String[] args) {
         try {
             solve(args);
-        } catch (IOException | CloneNotSupportedException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -22,10 +16,15 @@ public class Solver {
     /**
      * Read the instance, solve it, and print the solution in the standard output
      */
-    public static void solve(String[] args) throws IOException, CloneNotSupportedException {
-        String fileName = "./data/ks_lecture_dp_2";
+    private static void solve(String[] args) throws IOException{
+        String fileName = null;
+        for (String arg : args) {
+            if (arg.startsWith("-file="))
+                fileName = arg.substring(6);
+        }
         if (fileName == null)
             return;
+        //String fileName = "./data/ks_106_0";   //just for local test
 
         // read the lines out of the file
         List<String> lines = new ArrayList<>();
@@ -53,7 +52,13 @@ public class Solver {
 
         List<KnapsackSolver> solvers = new ArrayList<>();
         solvers.add(new GreedySolver(items, capacity));
-        solvers.get(0).solve().print();
+        solvers.add(new BranchAndBoundSolver(items, capacity));
+        if (capacity * itemsNum < 0.5*10e9) {
+            solvers.add(new DynamicProgrammingSolver(items, capacity));
+        }
+        for (KnapsackSolver solver : solvers) {
+            solver.solve().print();
+        }
     }
 
 }

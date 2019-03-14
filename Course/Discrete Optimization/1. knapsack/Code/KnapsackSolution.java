@@ -7,7 +7,6 @@ public class KnapsackSolution {
     private List<Item> choseItems;
     private String approach;
 
-
     public void print() {
         System.out.println(value+" 0");
         int[] taken = new int[itemsNum];
@@ -18,10 +17,6 @@ public class KnapsackSolution {
             System.out.print(taken[i] + " ");
         }
         System.out.println();
-    }
-
-    public int getItemsNum() {
-        return itemsNum;
     }
 
     public void setItemsNum(int itemsNum) {

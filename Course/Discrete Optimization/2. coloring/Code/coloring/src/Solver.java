@@ -17,7 +17,16 @@ public class Solver {
      * Read the instance, solve it, and print the solution in the standard output
      */
     public static void solve(String[] args) throws IOException {
-        String fileName = "./data/gc_4_1";
+//        String fileName = null;
+//        for (String arg : args) {
+//            if (arg.startsWith("-file="))
+//                fileName = arg.substring(6);
+//        }
+//        if (fileName == null)
+//            return;
+        String fileName = "./data/gc_20_1";
+        //String fileName = "./data/gc_10_1.txt";
+
 
         // read the lines out of the file
         List<String> lines = new ArrayList<>();
@@ -45,27 +54,12 @@ public class Solver {
             int pre = Integer.parseInt(parts[0]);
             int post = Integer.parseInt(parts[1]);
             adjList.get(pre).add(post);
+            adjList.get(post).add(pre);
         }
 
 
-        int obj = 0;
-        //int[] color = new int[V];
-        int[] color = {0,1,2,3};
-
-
-        ColoringSolver solver = new BruteForceSolver(V, E, adjList);
-        if (solver.isMeetConstraint(color, adjList)){
-            System.out.println("True");
-        }
-        else {
-            System.out.println("False");
-        }
-
-        System.out.println(solver.calColorNum(color));
-
+        ColoringSolver solver = new BacktrackingSolver(V, E, adjList);
         solver.solve().print();
-
-
 
     }
 }

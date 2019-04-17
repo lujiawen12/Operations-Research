@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.*;
 
 public abstract class ColoringSolver {
@@ -14,18 +15,18 @@ public abstract class ColoringSolver {
     protected int E;
     protected List<List<Integer>> adjList;
     protected Map<Integer, Integer> nodesDegreeMap;
-    protected List<Integer> nodesIdDescendByDegree;
+    protected List<Integer> nodesOrder;
 
     protected ColoringSolver(int V, int E, List<List<Integer>> adjList) {
         this.V = V;
         this.E = E;
         this.adjList = adjList;
         this.nodesDegreeMap = new HashMap<>(V);
-        this.nodesIdDescendByDegree = new ArrayList<>(V);
+        this.nodesOrder = new ArrayList<>(V);
         calNodeDegree();
     }
 
-    public abstract ColoringSolution solve();
+    public abstract ColoringSolution solve() throws IOException;
 
     private void calNodeDegree() {
         List<Node> nodes = new ArrayList<>(V);
@@ -49,7 +50,7 @@ public abstract class ColoringSolver {
 
         for (Node node : nodes) {
             nodesDegreeMap.put(node.id, node.nodeDeg);
-            nodesIdDescendByDegree.add(node.id);
+            nodesOrder.add(node.id);
         }
     }
 
@@ -70,4 +71,5 @@ public abstract class ColoringSolver {
         }
         return colorNum;
     }
+
 }

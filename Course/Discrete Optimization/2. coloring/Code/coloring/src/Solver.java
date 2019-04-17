@@ -17,14 +17,14 @@ public class Solver {
      * Read the instance, solve it, and print the solution in the standard output
      */
     public static void solve(String[] args) throws IOException {
-//        String fileName = null;
-//        for (String arg : args) {
-//            if (arg.startsWith("-file="))
-//                fileName = arg.substring(6);
-//        }
-//        if (fileName == null)
-//            return;
-        String fileName = "./data/gc_20_1";
+        String fileName = null;
+        for (String arg : args) {
+            if (arg.startsWith("-file="))
+                fileName = arg.substring(6);
+        }
+        if (fileName == null)
+            return;
+        //String fileName = "./data/gc_70_7";
         //String fileName = "./data/gc_10_1.txt";
 
 

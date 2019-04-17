@@ -22,14 +22,15 @@ public class Solver {
      * Read the instance, solve it, and print the solution in the standard output
      */
     public static void solve(String[] args) throws IOException {
-        String fileName = null;
-        for (String arg : args) {
-            if (arg.startsWith("-file="))
-                fileName = arg.substring(6);
-        }
-        if (fileName == null)
-            return;
+//        String fileName = null;
+//        for (String arg : args) {
+//            if (arg.startsWith("-file="))
+//                fileName = arg.substring(6);
+//        }
+//        if (fileName == null)
+//            return;
         //String fileName = "./data/tsp_5_1";
+        String fileName = "./data/tsp_33810_1";
 
         // read the data
         CityInfo cityInfo = Tools.readData(fileName);
@@ -37,23 +38,20 @@ public class Solver {
 
 
         //kNN + vns
-        int popNum = 100, k = 2;
-
-
-
-        Population population = Initialize.initialPop(cityInfo, popNum, k);
-        for (int i = 0; i < 500; i++) {
-            for (Individual individual : population.getIndvs()) {
-                VNS.solve(individual, cityInfo);
-            }
-            population.updateIndv();
-        }
-
-        System.out.println(population.getBestIndv().getFitness()+" 0");
-        for (int cityId : population.getBestIndv().getIndvCode()) {
-            System.out.print(cityId + " ");
-        }
-        System.out.println();
+//        int popNum = 100, k = 2;
+//        Population population = Initialize.initialPop(cityInfo, popNum, k);
+//        for (int i = 0; i < 500; i++) {
+//            for (Individual individual : population.getIndvs()) {
+//                VNS.solve(individual, cityInfo);
+//            }
+//            population.updateIndv();
+//        }
+//
+//        System.out.println(population.getBestIndv().getFitness()+" 0");
+//        for (int cityId : population.getBestIndv().getIndvCode()) {
+//            System.out.print(cityId + " ");
+//        }
+//        System.out.println();
 
 
     }

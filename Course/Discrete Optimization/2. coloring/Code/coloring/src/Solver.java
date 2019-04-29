@@ -16,29 +16,25 @@ public class Solver {
     /**
      * Read the instance, solve it, and print the solution in the standard output
      */
-    public static void solve(String[] args) throws IOException {
-        String fileName = null;
-        for (String arg : args) {
-            if (arg.startsWith("-file="))
-                fileName = arg.substring(6);
-        }
-        if (fileName == null)
-            return;
-        //String fileName = "./data/gc_70_7";
+    private static void solve(String[] args) throws IOException {
+//        String fileName = null;
+//        for (String arg : args) {
+//            if (arg.startsWith("-file="))
+//                fileName = arg.substring(6);
+//        }
+//        if (fileName == null)
+//            return;
+        String fileName = "./data/gc_70_7";
         //String fileName = "./data/gc_10_1.txt";
 
 
         // read the lines out of the file
         List<String> lines = new ArrayList<>();
-        BufferedReader input =  new BufferedReader(new FileReader(fileName));
-        try {
+        try (BufferedReader input = new BufferedReader(new FileReader(fileName))) {
             String line;
-            while (( line = input.readLine()) != null){
+            while ((line = input.readLine()) != null) {
                 lines.add(line);
             }
-        }
-        finally {
-            input.close();
         }
 
         // parse the data in the file & use the adjacency list to represent the undirected graph
@@ -56,7 +52,6 @@ public class Solver {
             adjList.get(pre).add(post);
             adjList.get(post).add(pre);
         }
-
 
         ColoringSolver solver = new BacktrackingSolver(V, E, adjList);
         solver.solve().print();

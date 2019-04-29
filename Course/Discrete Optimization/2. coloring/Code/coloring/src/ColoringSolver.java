@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.util.*;
 
 public abstract class ColoringSolver {
@@ -15,20 +14,36 @@ public abstract class ColoringSolver {
     protected int E;
     protected List<List<Integer>> adjList;
     protected Map<Integer, Integer> nodesDegreeMap;
-    protected List<Integer> nodesOrder;
+    protected List<Integer> nodesDescendByDeg;
+
+    public abstract ColoringSolution solve();
 
     protected ColoringSolver(int V, int E, List<List<Integer>> adjList) {
         this.V = V;
         this.E = E;
         this.adjList = adjList;
-        this.nodesDegreeMap = new HashMap<>(V);
-        this.nodesOrder = new ArrayList<>(V);
-        calNodeDegree();
+        buildNodesDegreeMap();
+        buildNodesOrder();
     }
 
-    public abstract ColoringSolution solve() throws IOException;
+    private void buildNodesDegreeMap() {
+        nodesDegreeMap = new HashMap<>(V);
+        int[] nodesDeg = new int[V];
+        for(int i = 0; i < adjList.size(); i++) {
+            if (adjList.get(i).isEmpty())
+                continue;
+            for (Integer neighbor : adjList.get(i)) {
+                nodesDeg[i]++;
+                nodesDeg[neighbor]++;
+            }
+        }
+        for (int i = 0; i < V; i++) {
+            nodesDegreeMap.put(i, nodesDeg[i]);
+        }
+    }
 
-    private void calNodeDegree() {
+    private void buildNodesOrder() {
+        nodesDescendByDeg = new ArrayList<>(V);
         List<Node> nodes = new ArrayList<>(V);
         for (int i = 0; i < V; i++) {
             nodes.add(new Node(i));
@@ -49,8 +64,7 @@ public abstract class ColoringSolver {
         });
 
         for (Node node : nodes) {
-            nodesDegreeMap.put(node.id, node.nodeDeg);
-            nodesOrder.add(node.id);
+            nodesDescendByDeg.add(node.id);
         }
     }
 

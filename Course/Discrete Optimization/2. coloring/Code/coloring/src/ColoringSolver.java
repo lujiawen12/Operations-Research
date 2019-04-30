@@ -86,4 +86,39 @@ public abstract class ColoringSolver {
         return colorNum;
     }
 
+    protected boolean isValid(int nodeId, int colorId, int[] colorOfNodes) {
+        for (Integer neighbor : adjList.get(nodeId)) {
+            if (colorId == colorOfNodes[neighbor]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    //Use the greedy algorithm based on node degree to create the initial solution
+    protected void initialColorPlan(int[] bestColorPlan) {
+        for (int i = 0; i < V; i++) {
+            bestColorPlan[i] = -1;
+        }
+        int curColorNum = 0;
+        for (Integer nodeId : nodesDescendByDeg) {
+            int colorId = 0;
+            while (colorId <= curColorNum) {
+                if (isValid(nodeId, colorId, bestColorPlan)) {
+                    break;
+                }
+                colorId++;
+            }
+            bestColorPlan[nodeId] = colorId;
+            if (colorId > curColorNum) {
+                curColorNum++;
+            }
+        }
+    }
+
+    protected void copyArray(int[] src, int[] dest) {
+        System.arraycopy(src, 0, dest, 0, src.length);
+    }
+
+
 }

@@ -5,7 +5,6 @@ public class BacktrackingSolver extends ColoringSolver {
         super(V, E, adjList);
     }
 
-
     @Override
     public ColoringSolution solve() {
         ColoringSolution backTrackingSolution = new ColoringSolution();
@@ -20,27 +19,25 @@ public class BacktrackingSolver extends ColoringSolver {
         int[] nodesColorOrder = new int[V];
         int obj = initial(bestColorPlan, nodesBound, nodesColorOrder);
 
-
         int n = 0;
         int curNodeId = nodesColorOrder[n];
         colorOfNodes[curNodeId] = 0;
-        long keepBest = 0;
-        long keepBestMax = V * 100;
-        while(n >= 0 && keepBest < keepBestMax) {
+        long searchTime = 0;
+        long searchTimeMax = V;
+        while(n >= 0 && searchTime < searchTimeMax) {
+            System.out.println(n);
             while (colorOfNodes[curNodeId] < nodesBound[curNodeId] && !isValid(curNodeId, colorOfNodes[curNodeId], colorOfNodes)) {
                 colorOfNodes[curNodeId]++;
             }
             if (colorOfNodes[curNodeId] < nodesBound[curNodeId]) {
                 if (n == V-1) {
+                    searchTime++;
                     int colorNum = calColorNum(colorOfNodes);
+                    System.out.println(colorNum + "\t" + obj);
                     if (colorNum < obj) {
                         obj = colorNum;
                         copyArray(colorOfNodes, bestColorPlan);
                         initialBound(obj, nodesBound);
-                        keepBest = 0;
-                    }
-                    else {
-                        keepBest += 1;
                     }
                     colorOfNodes[curNodeId] += 1;
                 }
@@ -105,44 +102,11 @@ public class BacktrackingSolver extends ColoringSolver {
         }
     }
 
-    //Create the initial solution and mark it as bound
-    private void initialColorPlan(int[] bestColorPlan) {
-        for (int i = 0; i < V; i++) {
-            bestColorPlan[i] = -1;
-        }
-        int curColorNum = 0;
-        for (Integer nodeId : nodesDescendByDeg) {
-            int colorId = 0;
-            while (colorId <= curColorNum) {
-                if (isValid(nodeId, colorId, bestColorPlan)) {
-                    break;
-                }
-                colorId++;
-            }
-            bestColorPlan[nodeId] = colorId;
-            if (colorId > curColorNum) {
-                curColorNum++;
-            }
-        }
-    }
 
     private void initialBound(int obj, int[] nodesBound) {
         for (int i = 0; i < V; i++) {
             nodesBound[i] = Math.min(i+1, obj-1);
         }
-    }
-
-    private boolean isValid(int nodeId, int colorId, int[] colorOfNodes) {
-        for (Integer neighbor : adjList.get(nodeId)) {
-            if (colorId == colorOfNodes[neighbor]) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private void copyArray(int[] src, int[] dest) {
-        System.arraycopy(src, 0, dest, 0, src.length);
     }
 
 }

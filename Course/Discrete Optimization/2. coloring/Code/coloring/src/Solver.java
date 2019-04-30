@@ -25,7 +25,7 @@ public class Solver {
 //        if (fileName == null)
 //            return;
         String fileName = "./data/gc_70_7";
-        //String fileName = "./data/gc_10_1.txt";
+        //String fileName = "./data/gc_50_3";
 
 
         // read the lines out of the file

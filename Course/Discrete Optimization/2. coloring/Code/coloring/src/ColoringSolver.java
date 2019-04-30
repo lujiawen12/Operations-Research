@@ -16,6 +16,10 @@ public abstract class ColoringSolver {
     protected Map<Integer, Integer> nodesDegreeMap;
     protected List<Integer> nodesDescendByDeg;
 
+    protected int[] bestColorPlan;
+    protected int[] nodesBound;
+    protected int[] colorOfNodes;
+
     public abstract ColoringSolution solve();
 
     protected ColoringSolver(int V, int E, List<List<Integer>> adjList) {
@@ -24,6 +28,12 @@ public abstract class ColoringSolver {
         this.adjList = adjList;
         buildNodesDegreeMap();
         buildNodesOrder();
+        bestColorPlan = new int[V];
+        nodesBound = new int[V];
+        colorOfNodes = new int[V];
+        for (int i = 1; i < V; i++) {
+            colorOfNodes[i] = -1;
+        }
     }
 
     private void buildNodesDegreeMap() {
@@ -32,10 +42,7 @@ public abstract class ColoringSolver {
         for(int i = 0; i < adjList.size(); i++) {
             if (adjList.get(i).isEmpty())
                 continue;
-            for (Integer neighbor : adjList.get(i)) {
-                nodesDeg[i]++;
-                nodesDeg[neighbor]++;
-            }
+            nodesDeg[i] += adjList.get(i).size();
         }
         for (int i = 0; i < V; i++) {
             nodesDegreeMap.put(i, nodesDeg[i]);
@@ -100,6 +107,7 @@ public abstract class ColoringSolver {
         for (int i = 0; i < V; i++) {
             bestColorPlan[i] = -1;
         }
+        bestColorPlan[0] = 0;
         int curColorNum = 0;
         for (Integer nodeId : nodesDescendByDeg) {
             int colorId = 0;

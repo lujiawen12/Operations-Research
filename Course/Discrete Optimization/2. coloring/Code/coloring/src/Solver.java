@@ -24,8 +24,8 @@ public class Solver {
 //        }
 //        if (fileName == null)
 //            return;
-        String fileName = "./data/gc_70_7";
-        //String fileName = "./data/gc_50_3";
+        //String fileName = "./data/gc_70_7";
+        String fileName = "./data/gc_4_1";
 
 
         // read the lines out of the file
@@ -53,7 +53,8 @@ public class Solver {
             adjList.get(post).add(pre);
         }
 
-        ColoringSolver solver = new BacktrackingSolver(V, E, adjList);
+        //ColoringSolver solver = new BacktrackingSolver(V, E, adjList);
+        ColoringSolver solver = new TabuSolver(V, E, adjList);
         solver.solve().print();
 
     }

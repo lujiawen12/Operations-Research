@@ -10,12 +10,6 @@ public class BacktrackingSolver extends ColoringSolver {
         ColoringSolution backTrackingSolution = new ColoringSolution();
         backTrackingSolution.setApproach("Backtracking");
 
-        int[] bestColorPlan = new int[V];
-        int[] nodesBound = new int[V];
-        int[] colorOfNodes = new int[V];
-        for (int i = 1; i < V; i++) {
-            colorOfNodes[i] = -1;
-        }
         int[] nodesColorOrder = new int[V];
         int obj = initial(bestColorPlan, nodesBound, nodesColorOrder);
 

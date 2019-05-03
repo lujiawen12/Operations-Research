@@ -1,9 +1,21 @@
 import java.util.List;
 
 public class BacktrackingSolver extends ColoringSolver {
+    private int[] bestColorPlan;
+    private int[] nodesBound;
+    private int[] colorPlan;
+
     public BacktrackingSolver(int V, int E, List<List<Integer>> adjList) {
         super(V, E, adjList);
+        bestColorPlan = new int[V];
+        nodesBound = new int[V];
+        colorPlan = new int[V];
+        for (int i = 1; i < V; i++) {
+            colorPlan[i] = -1;
+        }
     }
+
+
 
     @Override
     public ColoringSolution solve() {
@@ -11,41 +23,39 @@ public class BacktrackingSolver extends ColoringSolver {
         backTrackingSolution.setApproach("Backtracking");
 
         int[] nodesColorOrder = new int[V];
-        int obj = initial(bestColorPlan, nodesBound, nodesColorOrder);
+        int obj = initial(nodesColorOrder);
 
         int n = 0;
         int curNodeId = nodesColorOrder[n];
-        colorOfNodes[curNodeId] = 0;
+        colorPlan[curNodeId] = 0;
         long searchTime = 0;
         long searchTimeMax = V;
         while(n >= 0 && searchTime < searchTimeMax) {
-            System.out.println(n);
-            while (colorOfNodes[curNodeId] < nodesBound[curNodeId] && !isValid(curNodeId, colorOfNodes[curNodeId], colorOfNodes)) {
-                colorOfNodes[curNodeId]++;
+            while (colorPlan[curNodeId] < nodesBound[curNodeId] && !isValid(curNodeId, colorPlan[curNodeId], colorPlan)) {
+                colorPlan[curNodeId]++;
             }
-            if (colorOfNodes[curNodeId] < nodesBound[curNodeId]) {
+            if (colorPlan[curNodeId] < nodesBound[curNodeId]) {
                 if (n == V-1) {
                     searchTime++;
-                    int colorNum = calColorNum(colorOfNodes);
-                    System.out.println(colorNum + "\t" + obj);
+                    int colorNum = calColorNum(colorPlan);
                     if (colorNum < obj) {
                         obj = colorNum;
-                        copyArray(colorOfNodes, bestColorPlan);
-                        initialBound(obj, nodesBound);
+                        copyArray(colorPlan, bestColorPlan);
+                        calculateBound(obj);
                     }
-                    colorOfNodes[curNodeId] += 1;
+                    colorPlan[curNodeId] += 1;
                 }
                 else {
                     n++;
                     curNodeId = nodesColorOrder[n];
-                    colorOfNodes[curNodeId] = 0;
+                    colorPlan[curNodeId] = 0;
                 }
             }
             else {//Backtracking
                 n--;
                 if (n >= 0) {
                     curNodeId = nodesColorOrder[n];
-                    colorOfNodes[curNodeId] += 1;
+                    colorPlan[curNodeId] += 1;
                 }
             }
         }
@@ -58,26 +68,11 @@ public class BacktrackingSolver extends ColoringSolver {
 
 
     //initial the solution, bound and objective
-    private int initial(int[] bestColorPlan, int[] nodesBound, int[] nodesColorOrder){
+    private int initial(int[] nodesColorOrder){
         initialColorPlan(bestColorPlan);
         int obj = calColorNum(bestColorPlan);
-        initialBound(obj, nodesBound);
+        calculateBound(obj);
         initialColorOrderOfNodes(nodesColorOrder, obj);
-
-        System.out.println(obj);
-        for (int i = 0; i < V; i++) {
-            System.out.print(bestColorPlan[i] + " ");
-        }
-        System.out.println();
-        for (int i = 0; i < V; i++) {
-            System.out.print(nodesBound[i] + " ");
-        }
-        System.out.println();
-        for (int i = 0; i < V; i++) {
-            System.out.print(nodesColorOrder[i] + " ");
-        }
-        System.out.println();
-
         return obj;
     }
 
@@ -97,7 +92,7 @@ public class BacktrackingSolver extends ColoringSolver {
     }
 
 
-    private void initialBound(int obj, int[] nodesBound) {
+    private void calculateBound(int obj) {
         for (int i = 0; i < V; i++) {
             nodesBound[i] = Math.min(i+1, obj-1);
         }

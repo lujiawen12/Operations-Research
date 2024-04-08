@@ -63,7 +63,7 @@ class DPSolver(BaseSolver):
 
 
 if __name__ == '__main__':
-    file_location = './data/ks_30_0'
+    file_location = 'data/ks_30_0'
     with open(file_location, 'r') as input_data_file:
         test_input_data = input_data_file.read()
     solver = DPSolver(test_input_data)

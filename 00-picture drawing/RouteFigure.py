@@ -1,4 +1,5 @@
-import pylab as pl;
+import pylab as pl
+
 
 def readData(dataFile):
     file = open(dataFile)
@@ -27,11 +28,12 @@ def readRoute(routeFile):
             continue
         line = line.strip().split("\t")
         subroute = []
-        for item in line :
+        for item in line:
             subroute.append(item)
         routes.append(subroute)
     file.close()
     return routes
+
 
 def plotRoute(xCoord, yCoord, routes):
     # plot
@@ -50,12 +52,11 @@ def plotRoute(xCoord, yCoord, routes):
 
     pl.show()
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     dataFile = "./data/R101.txt"
     routeFile = "./result/R101result.txt"
     [xCoord, yCoord] = readData(dataFile)
     routes = readRoute(routeFile)
     plotRoute(xCoord, yCoord, routes)
     print("aaa")
-
-
